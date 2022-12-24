@@ -3,25 +3,13 @@
 // import styles from '../styles/Home.module.css'
 import { useState, useEffect } from "react";
 import Item from "../components/Item";
+import NewItem from "../components/NewItem";
 import Items from "../lib/items";
 
 export default function Home(props) {
   // const inputRef = useRef();
   const [filter, setFilter] = useState("");
-  const [content, setContent] = useState("");
   const [items, setItems] = useState(props.items);
-
-  const submitHandler = (event) => {
-    event.preventDefault();
-
-    // console.log(inputRef.current.value);
-    fetch("/api/indices", {
-      method: "POST",
-      body: JSON.stringify({ item: { content } }),
-    }).then(() => {
-      fetchItems();
-    });
-  };
 
   const updateFilter = (filter) => {
     setFilter(filter);
@@ -44,10 +32,8 @@ export default function Home(props) {
         <input type="text" onChange={(e) => updateFilter(e.target.value)} />
       </div>
 
-      <form onSubmit={submitHandler}>
-        <input type="text" onChange={(e) => setContent(e.target.value)} />{" "}
-        <button type="submit">create</button>
-      </form>
+      <NewItem handleUpdate={fetchItems} />
+
       <ul>
         {items.map((item) => {
           return (
