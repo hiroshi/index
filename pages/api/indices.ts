@@ -15,14 +15,16 @@ export default async (req, res) => {
       // console.log(req.query);
       const q = req.query.q;
       const filter = {};
-      if (q !== "") {
-        // filter["labels"] = labels.deserialize(q);
-        if (q.startsWith("!")) {
-          filter[`labels.${q.substring(1)}`] = { $ne: true };
-        } else {
-          filter[`labels.${q}`] = true;
+
+      q.split(/\s+/).forEach((label) => {
+        if (label !== "") {
+          if (label.startsWith("!")) {
+            filter[`labels.${label.substring(1)}`] = { $ne: true };
+          } else {
+            filter[`labels.${label}`] = true;
+          }
         }
-      }
+      });
       console.log(filter);
       const items = await Items.find(filter);
       // console.log(items);

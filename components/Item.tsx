@@ -2,7 +2,6 @@ import { useState } from "react";
 import label from "../lib/label";
 
 export default ({ item, handleUpdate }) => {
-  console.log(item);
   const [labelsStr, setLabelsStr] = useState(label.serialize(item.labels));
   const handleClick = (event) => {
     const labels = label.deserialize(labelsStr);
