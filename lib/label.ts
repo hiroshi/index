@@ -1,7 +1,7 @@
 export default {
   serialize: (obj) => {
     let list = [];
-    for (k in obj) {
+    for (let k in obj) {
       list.push(k);
     }
     return list.join(" ");
@@ -9,7 +9,9 @@ export default {
   deserialize: (str) => {
     let labels = {};
     str.split(/\s+/).forEach((label) => {
-      labels[label] = true;
+      if (label !== "") {
+        labels[label] = true;
+      }
     });
     return labels;
   },

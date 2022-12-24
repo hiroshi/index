@@ -1,9 +1,9 @@
 // import Head from 'next/head'
 // import Image from 'next/image'
 // import styles from '../styles/Home.module.css'
-import { useState } from "react";
-import { collectionPromise } from "../lib/mongo";
+import { useState, useEffect } from "react";
 import Item from "../components/Item";
+import Items from "../lib/items";
 
 export default function Home(props) {
   // const inputRef = useRef();
@@ -19,27 +19,40 @@ export default function Home(props) {
       method: "POST",
       body: JSON.stringify({ item: { content } }),
     }).then(() => {
-      fetch("/api/indices")
-        .then((res) => res.json())
-        .then((data) => setItems(data));
+      fetchItems();
     });
   };
+
+  const updateFilter = (filter) => {
+    setFilter(filter);
+  };
+
+  const fetchItems = () => {
+    fetch(`/api/indices?q=${filter}`)
+      .then((res) => res.json())
+      .then((data) => setItems(data));
+  };
+
+  useEffect(() => {
+    fetchItems();
+  }, [filter]);
 
   return (
     <>
       <div>
-        <input type="text" onChange={(e) => setFilter(e.target.value)} />
+        filter:
+        <input type="text" onChange={(e) => updateFilter(e.target.value)} />
       </div>
 
       <form onSubmit={submitHandler}>
         <input type="text" onChange={(e) => setContent(e.target.value)} />{" "}
-        <button type="submit">new</button>
+        <button type="submit">create</button>
       </form>
       <ul>
         {items.map((item) => {
           return (
-            <li key={item.content}>
-              <Item item={item} />
+            <li key={item._id}>
+              <Item item={item} handleUpdate={fetchItems} />
             </li>
           );
         })}
@@ -49,18 +62,6 @@ export default function Home(props) {
 }
 
 export async function getServerSideProps(context) {
-  const items = await collectionPromise("items").then((collection) =>
-    collection
-      .find({})
-      .sort({ _id: "DESC" })
-      .toArray()
-      .then((items) =>
-        items.map((item) => {
-          item._id = item._id.toJSON();
-          return item;
-        })
-      )
-  );
-  // console.log(items);
+  const items = await Items.find();
   return { props: { items } };
 }

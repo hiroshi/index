@@ -1,13 +1,16 @@
 import { useState } from "react";
 import label from "../lib/label";
 
-export default ({ item }) => {
+export default ({ item, handleUpdate }) => {
+  console.log(item);
   const [labelsStr, setLabelsStr] = useState(label.serialize(item.labels));
   const handleClick = (event) => {
     const labels = label.deserialize(labelsStr);
     fetch(`/api/item/${item._id}`, {
       method: "PATCH",
       body: JSON.stringify({ labels }),
+    }).then(() => {
+      handleUpdate();
     });
   };
 

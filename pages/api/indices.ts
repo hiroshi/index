@@ -1,4 +1,5 @@
-import { collectionPromise } from "../../lib/mongo";
+import Items from "../../lib/items";
+import labels from "../../lib/label";
 
 export default async (req, res) => {
   switch (req.method) {
@@ -6,24 +7,25 @@ export default async (req, res) => {
       console.log(`POST ${req.body}`);
       const { item } = JSON.parse(req.body);
 
-      collectionPromise("items").then((items) => items.insertOne(item));
+      Items.insertOne(item);
 
       res.status(204).send();
       break;
     case "GET":
-      // const items = [{ content: "new" }];
-      const items = await collectionPromise("items").then((collection) =>
-        collection
-          .find({})
-          .sort({ _id: "DESC" })
-          .toArray()
-          .then((items) =>
-            items.map((item) => {
-              item._id = item._id.toJSON();
-              return item;
-            })
-          )
-      );
+      // console.log(req.query);
+      const q = req.query.q;
+      const filter = {};
+      if (q !== "") {
+        // filter["labels"] = labels.deserialize(q);
+        if (q.startsWith("!")) {
+          filter[`labels.${q.substring(1)}`] = { $ne: true };
+        } else {
+          filter[`labels.${q}`] = true;
+        }
+      }
+      console.log(filter);
+      const items = await Items.find(filter);
+      // console.log(items);
       res.status(200).json(items);
       break;
   }
