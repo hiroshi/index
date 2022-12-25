@@ -24,6 +24,8 @@ export default ({ item, handleUpdate }) => {
         method: "POST",
         body: JSON.stringify({ item: { content, labels } }),
       }).then(() => {
+        setContent("");
+        setLabelsStr("");
         handleUpdate();
       });
     }
