@@ -3,7 +3,6 @@
 // import styles from '../styles/Home.module.css'
 import { useState, useEffect } from "react";
 import Item from "../components/Item";
-import NewItem from "../components/NewItem";
 import Items from "../lib/items";
 
 export default function Home(props) {
@@ -32,7 +31,7 @@ export default function Home(props) {
         <input type="text" onChange={(e) => updateFilter(e.target.value)} />
       </div>
 
-      <NewItem handleUpdate={fetchItems} />
+      <Item handleUpdate={fetchItems} />
 
       <ul>
         {items.map((item) => {
