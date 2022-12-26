@@ -7,6 +7,7 @@ export default ({ item, handleUpdate }) => {
   }
   const [content, setContent] = useState(item.content);
   const [labelsStr, setLabelsStr] = useState(label.serialize(item.labels));
+  const [suggestedLabels, setSuggestedLabels] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -31,6 +32,12 @@ export default ({ item, handleUpdate }) => {
     }
   };
 
+  const handleFocusLabels = () => {
+    fetch("/api/labels")
+      .then((res) => res.json())
+      .then((data) => setSuggestedLabels(data));
+  };
+
   return (
     <form onSubmit={handleSubmit}>
       <input
@@ -42,8 +49,21 @@ export default ({ item, handleUpdate }) => {
         type="text"
         value={labelsStr}
         onChange={(e) => setLabelsStr(e.target.value)}
+        onFocus={handleFocusLabels}
+        onBlur={(e) => setSuggestedLabels(null)}
       />{" "}
       <button type="submit">submit</button>
+      {suggestedLabels && (
+        <div>
+          {suggestedLabels.map((l) => {
+            return (
+              <span key={l._id} style={{ margin: "1em" }}>
+                {l._id}
+              </span>
+            );
+          })}
+        </div>
+      )}
     </form>
   );
 };

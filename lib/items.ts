@@ -15,7 +15,21 @@ export default {
         )
     );
   },
+
   insertOne: (item) => {
     collectionPromise("items").then((collection) => collection.insertOne(item));
+  },
+
+  labels: async () => {
+    return await collectionPromise("items").then((collection) =>
+      collection
+        .aggregate([
+          { $project: { l: { $objectToArray: "$labels" } } },
+          { $match: { "l.k": { $ne: "" } } },
+          { $unwind: "$l" },
+          { $group: { _id: "$l.k", count: { $count: {} } } },
+        ])
+        .toArray()
+    );
   },
 };
