@@ -31,7 +31,11 @@ export default function Home(props) {
         <input type="text" onChange={(e) => updateFilter(e.target.value)} />
       </div>
 
-      <Item handleUpdate={fetchItems} />
+      <ul>
+        <li>
+          <Item handleUpdate={fetchItems} />
+        </li>
+      </ul>
 
       <ul>
         {items.map((item) => {

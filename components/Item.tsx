@@ -1,5 +1,15 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import label from "../lib/label";
+
+// https://stackoverflow.com/a/65821541/338986
+/*export*/ function useOutsideClick(ref: any, onClickOut: () => void) {
+  useEffect(() => {
+    const onClick = ({ target }: any) =>
+      !ref.contains(target) && onClickOut?.();
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, []);
+}
 
 export default ({ item, handleUpdate }) => {
   if (!item) {
@@ -38,6 +48,12 @@ export default ({ item, handleUpdate }) => {
       .then((data) => setSuggestedLabels(data));
   };
 
+  let labelsRef = useRef();
+  useOutsideClick(labelsRef.current!, () => {
+    setSuggestedLabels(null);
+  });
+  const suggestedMergin = suggestedLabels ? "1.5em" : 0;
+
   return (
     <form onSubmit={handleSubmit}>
       <input
@@ -45,25 +61,33 @@ export default ({ item, handleUpdate }) => {
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />{" "}
-      <input
-        type="text"
-        value={labelsStr}
-        onChange={(e) => setLabelsStr(e.target.value)}
-        onFocus={handleFocusLabels}
-        onBlur={(e) => setSuggestedLabels(null)}
-      />{" "}
+      <span
+        ref={labelsRef}
+        style={{
+          marginBottom: suggestedMergin,
+          display: "inline-block",
+          verticalAlign: "top",
+        }}
+      >
+        <input
+          type="text"
+          value={labelsStr}
+          onChange={(e) => setLabelsStr(e.target.value)}
+          onFocus={handleFocusLabels}
+        />
+        {suggestedLabels && (
+          <div style={{ position: "absolute" }}>
+            {suggestedLabels.map((l) => {
+              return (
+                <span key={l._id} style={{ margin: "1em" }}>
+                  {l._id}
+                </span>
+              );
+            })}
+          </div>
+        )}
+      </span>
       <button type="submit">submit</button>
-      {suggestedLabels && (
-        <div>
-          {suggestedLabels.map((l) => {
-            return (
-              <span key={l._id} style={{ margin: "1em" }}>
-                {l._id}
-              </span>
-            );
-          })}
-        </div>
-      )}
     </form>
   );
 };
