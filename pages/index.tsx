@@ -2,6 +2,7 @@
 // import Image from 'next/image'
 // import styles from '../styles/Home.module.css'
 import { useState, useEffect } from "react";
+import LabelsInput from "../components/LabelsInput";
 import Item from "../components/Item";
 import Items from "../lib/items";
 
@@ -27,8 +28,11 @@ export default function Home(props) {
   return (
     <>
       <div>
-        filter:
-        <input type="text" onChange={(e) => updateFilter(e.target.value)} />
+        filter:{" "}
+        <LabelsInput
+          initialLabelsStr=""
+          onChange={(e) => updateFilter(e.target.value)}
+        />
       </div>
 
       <ul>
