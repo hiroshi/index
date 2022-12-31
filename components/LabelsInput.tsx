@@ -53,6 +53,7 @@ export default ({ initialLabelsStr, onChange }) => {
       <input
         ref={labelsInputRef}
         type="text"
+        placeholder="labels"
         value={labelsStr}
         onChange={(e) => setLabelsStr(e.target.value)}
         onFocus={handleFocusLabels}

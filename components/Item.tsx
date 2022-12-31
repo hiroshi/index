@@ -36,6 +36,7 @@ export default ({ item, handleUpdate }) => {
     <form onSubmit={handleSubmit}>
       <input
         type="text"
+        placeholder="title"
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />{" "}
