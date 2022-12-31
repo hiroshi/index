@@ -5,7 +5,7 @@ import label from "../lib/label";
 /*export*/ function useOutsideClick(ref: any, onClickOut: () => void) {
   useEffect(() => {
     const onClick = ({ target }: any) =>
-      !ref.contains(target) && onClickOut?.();
+      ref.current && !ref.current.contains(target) && onClickOut?.();
     document.addEventListener("click", onClick);
     return () => document.removeEventListener("click", onClick);
   }, []);
@@ -48,11 +48,21 @@ export default ({ item, handleUpdate }) => {
       .then((data) => setSuggestedLabels(data));
   };
 
-  let labelsRef = useRef();
-  useOutsideClick(labelsRef.current!, () => {
+  const labelsRef = useRef();
+  useOutsideClick(labelsRef, () => {
     setSuggestedLabels(null);
   });
   const suggestedMergin = suggestedLabels ? "1.5em" : 0;
+
+  const labelsInputRef = useRef();
+  const handleSelectLabel = (label) => {
+    if (labelsStr.match(/^\s*$/)) {
+      setLabelsStr(label);
+    } else {
+      setLabelsStr(labelsStr + " " + label);
+    }
+    labelsInputRef.current.focus();
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -70,6 +80,7 @@ export default ({ item, handleUpdate }) => {
         }}
       >
         <input
+          ref={labelsInputRef}
           type="text"
           value={labelsStr}
           onChange={(e) => setLabelsStr(e.target.value)}
@@ -79,9 +90,16 @@ export default ({ item, handleUpdate }) => {
           <div style={{ position: "absolute" }}>
             {suggestedLabels.map((l) => {
               return (
-                <span key={l._id} style={{ margin: "1em" }}>
+                <button
+                  key={l._id}
+                  style={{ margin: "0 2px" }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleSelectLabel(l._id);
+                  }}
+                >
                   {l._id}
-                </span>
+                </button>
               );
             })}
           </div>
