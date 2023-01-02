@@ -33,9 +33,9 @@ export default ({ initialLabelsStr, onChange, negate }) => {
       setLabelsStr(label);
     } else {
       const labels = labelutils.deserialize(labelsStr);
-      for (l in labels) {
+      for (const l in labels) {
         if (label === l) {
-          labels[l] = !labels[l];
+          labels[l] = negate ? !labels[l] : true;
           setLabelsStr(labelutils.serialize(labels));
           return;
         }
@@ -69,9 +69,10 @@ export default ({ initialLabelsStr, onChange, negate }) => {
       {suggestedLabels && (
         <div style={{ position: "absolute" }}>
           {suggestedLabels.map((l) => {
-            const caption = labelsStr.match(new RegExp(`\\b${l._id}\\b`))
-              ? `!${l._id}`
-              : l._id;
+            const caption =
+              negate && labelsStr.match(new RegExp(`\\b${l._id}\\b`))
+                ? `!${l._id}`
+                : l._id;
 
             return (
               <button
