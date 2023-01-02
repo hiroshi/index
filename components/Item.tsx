@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import labelutils from "../lib/labelutils";
 import LabelsInput from "./LabelsInput";
 
@@ -7,7 +7,13 @@ export default ({ item, handleUpdate }) => {
     item = { content: "", labels: [] };
   }
   const [content, setContent] = useState(item.content);
-  const [labelsStr, setLabelsStr] = useState(labelutils.serialize(item.labels));
+  const initialLabelStr = labelutils.serialize(item.labels);
+  // console.log(initialLabelStr);
+  const [labelsStr, setLabelsStr] = useState(initialLabelStr);
+  useEffect(() => {
+    console.log(`useEffect: ${initialLabelStr}`);
+    setLabelsStr(initialLabelStr);
+  }, [initialLabelStr]);
 
   const handleSubmit = (event) => {
     event.preventDefault();

@@ -13,6 +13,9 @@ import labelutils from "../lib/labelutils";
 
 export default ({ initialLabelsStr, onChange, negate }) => {
   const [labelsStr, setLabelsStr] = useState(initialLabelsStr);
+  useEffect(() => {
+    setLabelsStr(initialLabelsStr);
+  }, [initialLabelsStr]);
   const [suggestedLabels, setSuggestedLabels] = useState(null);
 
   const handleFocusLabels = () => {

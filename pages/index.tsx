@@ -2,12 +2,12 @@
 // import Image from 'next/image'
 // import styles from '../styles/Home.module.css'
 import { useState, useEffect } from "react";
+import labelutils from "../lib/labelutils";
 import LabelsInput from "../components/LabelsInput";
 import Item from "../components/Item";
 import Items from "../lib/items";
 
 export default function Home(props) {
-  // const inputRef = useRef();
   const [filter, setFilter] = useState("");
   const [items, setItems] = useState(props.items);
 
@@ -32,13 +32,16 @@ export default function Home(props) {
         <LabelsInput
           initialLabelsStr=""
           onChange={(e) => updateFilter(e.target.value)}
-          nagete={true}
+          negate={true}
         />
       </div>
 
       <ul>
         <li>
-          <Item handleUpdate={fetchItems} />
+          <Item
+            item={{ labels: labelutils.deserialize(filter) }}
+            handleUpdate={fetchItems}
+          />
         </li>
       </ul>
 
