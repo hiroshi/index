@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import label from "../lib/label";
+import labelutils from "../lib/labelutils";
 
 // https://stackoverflow.com/a/65821541/338986
 /*export*/ function useOutsideClick(ref: any, onClickOut: () => void) {
@@ -11,7 +11,7 @@ import label from "../lib/label";
   }, []);
 }
 
-export default ({ initialLabelsStr, onChange }) => {
+export default ({ initialLabelsStr, onChange, negate }) => {
   const [labelsStr, setLabelsStr] = useState(initialLabelsStr);
   const [suggestedLabels, setSuggestedLabels] = useState(null);
 
@@ -32,9 +32,17 @@ export default ({ initialLabelsStr, onChange }) => {
     if (labelsStr.match(/^\s*$/)) {
       setLabelsStr(label);
     } else {
+      const labels = labelutils.deserialize(labelsStr);
+      for (l in labels) {
+        if (label === l) {
+          labels[l] = !labels[l];
+          setLabelsStr(labelutils.serialize(labels));
+          return;
+        }
+      }
       setLabelsStr(labelsStr + " " + label);
     }
-    labelsInputRef.current.focus();
+    // labelsInputRef.current.focus();
   };
 
   useEffect(() => {
@@ -61,6 +69,10 @@ export default ({ initialLabelsStr, onChange }) => {
       {suggestedLabels && (
         <div style={{ position: "absolute" }}>
           {suggestedLabels.map((l) => {
+            const caption = labelsStr.match(new RegExp(`\\b${l._id}\\b`))
+              ? `!${l._id}`
+              : l._id;
+
             return (
               <button
                 key={l._id}
@@ -70,7 +82,7 @@ export default ({ initialLabelsStr, onChange }) => {
                   handleSelectLabel(l._id);
                 }}
               >
-                {l._id}
+                {caption}
               </button>
             );
           })}

@@ -32,6 +32,7 @@ export default function Home(props) {
         <LabelsInput
           initialLabelsStr=""
           onChange={(e) => updateFilter(e.target.value)}
+          nagete={true}
         />
       </div>
 

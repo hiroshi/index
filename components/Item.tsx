@@ -1,5 +1,5 @@
 import { useState } from "react";
-import label from "../lib/label";
+import labelutils from "../lib/labelutils";
 import LabelsInput from "./LabelsInput";
 
 export default ({ item, handleUpdate }) => {
@@ -7,12 +7,12 @@ export default ({ item, handleUpdate }) => {
     item = { content: "", labels: [] };
   }
   const [content, setContent] = useState(item.content);
-  const [labelsStr, setLabelsStr] = useState(label.serialize(item.labels));
+  const [labelsStr, setLabelsStr] = useState(labelutils.serialize(item.labels));
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const labels = label.deserialize(labelsStr);
+    const labels = labelutils.deserialize(labelsStr);
     if (item._id) {
       fetch(`/api/item/${item._id}`, {
         method: "PATCH",
