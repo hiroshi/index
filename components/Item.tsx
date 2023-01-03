@@ -8,10 +8,8 @@ export default ({ item, handleUpdate }) => {
   }
   const [content, setContent] = useState(item.content);
   const initialLabelStr = labelutils.serialize(item.labels);
-  // console.log(initialLabelStr);
   const [labelsStr, setLabelsStr] = useState(initialLabelStr);
   useEffect(() => {
-    console.log(`useEffect: ${initialLabelStr}`);
     setLabelsStr(initialLabelStr);
   }, [initialLabelStr]);
 

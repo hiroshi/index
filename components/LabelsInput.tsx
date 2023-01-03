@@ -4,19 +4,60 @@ import labelutils from "../lib/labelutils";
 // https://stackoverflow.com/a/65821541/338986
 /*export*/ function useOutsideClick(ref: any, onClickOut: () => void) {
   useEffect(() => {
-    const onClick = ({ target }: any) =>
-      ref.current && !ref.current.contains(target) && onClickOut?.();
-    document.addEventListener("click", onClick);
+    const onClick = ({ target }: any) => {
+      !ref.current?.contains(target) && onClickOut?.();
+    };
+    // https://github.com/facebook/react/issues/20325#issuecomment-732707240
+    document.addEventListener("click", onClick, { capture: true });
     return () => document.removeEventListener("click", onClick);
   }, []);
 }
 
+const Labels = ({
+  suggestedLabels,
+  parentRef,
+  labelsStr,
+  negate,
+  handleSelectLabel,
+  setSuggestedLabels,
+}) => {
+  useOutsideClick(parentRef, () => {
+    setSuggestedLabels(null);
+  });
+
+  return (
+    <div style={{ position: "absolute" }}>
+      {suggestedLabels.map((l) => {
+        let caption = l._id;
+        if (labelsStr.match(new RegExp(`\\b${l._id}\\b`))) {
+          caption = negate ? `!${l._id}` : <s>{caption}</s>;
+        }
+
+        return (
+          <button
+            key={l._id}
+            style={{ margin: "0 2px" }}
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              handleSelectLabel(l._id);
+            }}
+          >
+            {caption}
+          </button>
+        );
+      })}
+    </div>
+  );
+};
+
 export default ({ initialLabelsStr, onChange, negate }) => {
+  const [suggestedLabels, setSuggestedLabels] = useState(null);
+
   const [labelsStr, setLabelsStr] = useState(initialLabelsStr);
   useEffect(() => {
     setLabelsStr(initialLabelsStr);
   }, [initialLabelsStr]);
-  const [suggestedLabels, setSuggestedLabels] = useState(null);
 
   const handleFocusLabels = () => {
     fetch("/api/labels")
@@ -25,9 +66,6 @@ export default ({ initialLabelsStr, onChange, negate }) => {
   };
 
   const labelsRef = useRef();
-  useOutsideClick(labelsRef, () => {
-    setSuggestedLabels(null);
-  });
   const suggestedMergin = suggestedLabels ? "1.5em" : 0;
 
   const labelsInputRef = useRef();
@@ -38,7 +76,11 @@ export default ({ initialLabelsStr, onChange, negate }) => {
       const labels = labelutils.deserialize(labelsStr);
       for (const l in labels) {
         if (label === l) {
-          labels[l] = negate ? !labels[l] : true;
+          if (negate) {
+            labels[l] = !labels[l];
+          } else {
+            delete labels[l];
+          }
           setLabelsStr(labelutils.serialize(labels));
           return;
         }
@@ -70,27 +112,14 @@ export default ({ initialLabelsStr, onChange, negate }) => {
         onFocus={handleFocusLabels}
       />
       {suggestedLabels && (
-        <div style={{ position: "absolute" }}>
-          {suggestedLabels.map((l) => {
-            const caption =
-              negate && labelsStr.match(new RegExp(`\\b${l._id}\\b`))
-                ? `!${l._id}`
-                : l._id;
-
-            return (
-              <button
-                key={l._id}
-                style={{ margin: "0 2px" }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleSelectLabel(l._id);
-                }}
-              >
-                {caption}
-              </button>
-            );
-          })}
-        </div>
+        <Labels
+          suggestedLabels={suggestedLabels}
+          parentRef={labelsRef}
+          labelsStr={labelsStr}
+          negate={negate}
+          handleSelectLabel={handleSelectLabel}
+          setSuggestedLabels={setSuggestedLabels}
+        />
       )}
     </span>
   );
