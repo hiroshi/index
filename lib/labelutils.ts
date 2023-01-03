@@ -15,7 +15,9 @@ export default {
     str.split(/\s+/).forEach((label) => {
       if (label !== "") {
         const m = label.match(/^(\!)?(\w+)$/);
-        labels[m[2]] = !m[1];
+        if (m) {
+          labels[m[2]] = !m[1];
+        }
       }
     });
     return labels;
