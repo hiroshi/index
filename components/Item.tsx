@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import labelutils from "../lib/labelutils";
 import LabelsInput from "./LabelsInput";
 
-export default ({ item, handleUpdate }: any) => {
+export default function Item({ item, handleUpdate }: any) {
   if (!item) {
     item = { content: "", labels: [] };
   }
@@ -51,4 +51,4 @@ export default ({ item, handleUpdate }: any) => {
       <button type="submit">submit</button>
     </form>
   );
-};
+}

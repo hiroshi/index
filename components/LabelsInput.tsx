@@ -57,7 +57,11 @@ interface Props {
   negate?: boolean;
 }
 
-export default ({ initialLabelsStr, onChange, negate }: Props) => {
+export default function LabelsInput({
+  initialLabelsStr,
+  onChange,
+  negate,
+}: Props) {
   const [suggestedLabels, setSuggestedLabels] = useState(null);
 
   const [labelsStr, setLabelsStr] = useState(initialLabelsStr);
@@ -129,4 +133,4 @@ export default ({ initialLabelsStr, onChange, negate }: Props) => {
       )}
     </span>
   );
-};
+}
