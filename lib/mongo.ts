@@ -1,6 +1,10 @@
 // https://www.mongodb.com/developer/languages/javascript/nextjs-with-mongodb/
 import { MongoClient } from "mongodb";
 
+declare global {
+  var _mongoClientPromise: Promise<MongoClient>;
+}
+
 // const uri = process.env.MONGODB_URI
 const uri = "mongodb://mongo/index";
 const options = {};
@@ -22,7 +26,7 @@ if (process.env.NODE_ENV === "development") {
   clientPromise = client.connect();
 }
 
-async function collectionPromise(name) {
+async function collectionPromise(name: string) {
   const client = await clientPromise;
   return client.db().collection(name);
 }

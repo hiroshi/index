@@ -20,14 +20,14 @@ const Labels = ({
   negate,
   handleSelectLabel,
   setSuggestedLabels,
-}) => {
+}: any) => {
   useOutsideClick(parentRef, () => {
     setSuggestedLabels(null);
   });
 
   return (
     <div style={{ position: "absolute" }}>
-      {suggestedLabels.map((l) => {
+      {suggestedLabels.map((l: any) => {
         let caption = l._id;
         if (labelsStr.match(new RegExp(`\\b${l._id}\\b`))) {
           caption = negate ? `!${l._id}` : <s>{caption}</s>;
@@ -51,7 +51,13 @@ const Labels = ({
   );
 };
 
-export default ({ initialLabelsStr, onChange, negate }) => {
+interface Props {
+  initialLabelsStr: string;
+  onChange: Function;
+  negate?: boolean;
+}
+
+export default ({ initialLabelsStr, onChange, negate }: Props) => {
   const [suggestedLabels, setSuggestedLabels] = useState(null);
 
   const [labelsStr, setLabelsStr] = useState(initialLabelsStr);
@@ -65,11 +71,11 @@ export default ({ initialLabelsStr, onChange, negate }) => {
       .then((data) => setSuggestedLabels(data));
   };
 
-  const labelsRef = useRef();
+  const labelsRef = useRef(null);
   const suggestedMergin = suggestedLabels ? "1.5em" : 0;
 
-  const labelsInputRef = useRef();
-  const handleSelectLabel = (label) => {
+  const labelsInputRef = useRef(null);
+  const handleSelectLabel = (label: string) => {
     if (labelsStr.match(/^\s*$/)) {
       setLabelsStr(label);
     } else {

@@ -1,22 +1,28 @@
 import { collectionPromise } from "../lib/mongo";
 
 export default {
-  find: async (filter) => {
+  find: async (filter: { [key: string]: any }) => {
     return await collectionPromise("items").then((collection) =>
       collection
         .find(filter)
-        .sort({ _id: "DESC" })
+        .sort({ _id: "desc" })
         .toArray()
         .then((items) =>
           items.map((item) => {
-            item._id = item._id.toJSON();
-            return item;
+            // item._id = item._id.toJSON();
+            // item.id = item._id.toJSON();
+            // delete item._id;
+            return {
+              id: item._id.toJSON(),
+              content: item.content,
+              labels: item.labels || [],
+            };
           })
         )
     );
   },
 
-  insertOne: (item) => {
+  insertOne: (item: any) => {
     collectionPromise("items").then((collection) => collection.insertOne(item));
   },
 

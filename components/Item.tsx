@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import labelutils from "../lib/labelutils";
 import LabelsInput from "./LabelsInput";
 
-export default ({ item, handleUpdate }) => {
+export default ({ item, handleUpdate }: any) => {
   if (!item) {
     item = { content: "", labels: [] };
   }
@@ -13,7 +13,7 @@ export default ({ item, handleUpdate }) => {
     setLabelsStr(initialLabelStr);
   }, [initialLabelStr]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: any) => {
     event.preventDefault();
 
     const labels = labelutils.deserialize(labelsStr);
@@ -46,7 +46,7 @@ export default ({ item, handleUpdate }) => {
       />{" "}
       <LabelsInput
         initialLabelsStr={labelsStr}
-        onChange={(e) => setLabelsStr(e.target.value)}
+        onChange={(e: any) => setLabelsStr(e.target.value)}
       />{" "}
       <button type="submit">submit</button>
     </form>

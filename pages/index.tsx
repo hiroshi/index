@@ -7,11 +7,11 @@ import LabelsInput from "../components/LabelsInput";
 import Item from "../components/Item";
 import Items from "../lib/items";
 
-export default function Home(props) {
+export default function Home(props: any) {
   const [filter, setFilter] = useState("");
   const [items, setItems] = useState(props.items);
 
-  const updateFilter = (filter) => {
+  const updateFilter = (filter: any) => {
     setFilter(filter);
   };
 
@@ -31,7 +31,7 @@ export default function Home(props) {
         filter:{" "}
         <LabelsInput
           initialLabelsStr=""
-          onChange={(e) => updateFilter(e.target.value)}
+          onChange={(e: any) => updateFilter(e.target.value)}
           negate={true}
         />
       </div>
@@ -46,9 +46,9 @@ export default function Home(props) {
       </ul>
 
       <ul>
-        {items.map((item) => {
+        {items.map((item: any) => {
           return (
-            <li key={item._id}>
+            <li key={item.id}>
               <Item item={item} handleUpdate={fetchItems} />
             </li>
           );
@@ -58,7 +58,7 @@ export default function Home(props) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const items = await Items.find();
+export async function getServerSideProps(context: any) {
+  const items = await Items.find({});
   return { props: { items } };
 }

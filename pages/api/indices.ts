@@ -1,7 +1,8 @@
+import type { NextApiRequest, NextApiResponse } from "next";
 import Items from "../../lib/items";
-import labels from "../../lib/label";
+// import labelsutils from "../../lib/labelutils";
 
-export default async (req, res) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "POST":
       console.log(`POST ${req.body}`);
@@ -9,14 +10,14 @@ export default async (req, res) => {
 
       Items.insertOne(item);
 
-      res.status(204).send();
+      res.status(204).send("");
       break;
     case "GET":
       // console.log(req.query);
-      const q = req.query.q;
-      const filter = {};
+      const q = req.query.q as string;
+      const filter: { [key: string]: any } = {};
 
-      q.split(/\s+/).forEach((label) => {
+      q.split(/\s+/).forEach((label: string) => {
         if (label !== "") {
           if (label.startsWith("!")) {
             filter[`labels.${label.substring(1)}`] = { $ne: true };

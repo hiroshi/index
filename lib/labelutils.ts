@@ -1,5 +1,7 @@
+type Labels = { [k: string]: boolean };
+
 export default {
-  serialize: (labels) => {
+  serialize: (labels: Labels) => {
     let list = [];
     for (let label in labels) {
       if (labels[label]) {
@@ -10,8 +12,8 @@ export default {
     }
     return list.join(" ");
   },
-  deserialize: (str) => {
-    let labels = {};
+  deserialize: (str: string) => {
+    let labels: Labels = {};
     str.split(/\s+/).forEach((label) => {
       if (label !== "") {
         const m = label.match(/^(\!)?(\w+)$/);
