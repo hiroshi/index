@@ -12,13 +12,16 @@ export default {
     }
     return list.join(" ");
   },
-  deserialize: (str: string) => {
+
+  deserialize: (str: string, opts: { ignoreNegate?: boolean } = {}) => {
     let labels: Labels = {};
     str.split(/\s+/).forEach((label) => {
       if (label !== "") {
         const m = label.match(/^(\!)?(\w+)$/);
         if (m) {
-          labels[m[2]] = !m[1];
+          if (!opts.ignoreNegate || !m[1]) {
+            labels[m[2]] = !m[1];
+          }
         }
       }
     });

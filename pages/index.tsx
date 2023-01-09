@@ -39,7 +39,9 @@ export default function Home(props: any) {
       <ul>
         <li>
           <Item
-            item={{ labels: labelutils.deserialize(filter) }}
+            item={{
+              labels: labelutils.deserialize(filter, { ignoreNegate: true }),
+            }}
             handleUpdate={fetchItems}
           />
         </li>
