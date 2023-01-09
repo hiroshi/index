@@ -4,9 +4,9 @@ import LabelsInput from "./LabelsInput";
 
 export default function Item({ item, handleUpdate }: any) {
   if (!item) {
-    item = { content: "", labels: [] };
+    item = { title: "", labels: [] };
   }
-  const [content, setContent] = useState(item.content);
+  const [title, setTitle] = useState(item.title);
   const initialLabelStr = labelutils.serialize(item.labels);
   const [labelsStr, setLabelsStr] = useState(initialLabelStr);
   useEffect(() => {
@@ -20,16 +20,16 @@ export default function Item({ item, handleUpdate }: any) {
     if (item.id) {
       fetch(`/api/item/${item.id}`, {
         method: "PATCH",
-        body: JSON.stringify({ content, labels }),
+        body: JSON.stringify({ title, labels }),
       }).then(() => {
         handleUpdate();
       });
     } else {
       fetch("/api/indices", {
         method: "POST",
-        body: JSON.stringify({ item: { content, labels } }),
+        body: JSON.stringify({ item: { title, labels } }),
       }).then(() => {
-        setContent("");
+        setTitle("");
         setLabelsStr("");
         handleUpdate();
       });
@@ -39,10 +39,11 @@ export default function Item({ item, handleUpdate }: any) {
   return (
     <form onSubmit={handleSubmit}>
       <input
+        style={{ width: "480px" }}
         type="text"
         placeholder="title"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
       />{" "}
       <LabelsInput
         initialLabelsStr={labelsStr}

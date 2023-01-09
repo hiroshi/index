@@ -14,7 +14,7 @@ export default {
             // delete item._id;
             return {
               id: item._id.toJSON(),
-              content: item.content,
+              title: item.title,
               labels: item.labels || [],
             };
           })
