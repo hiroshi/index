@@ -28,9 +28,11 @@ const Labels = ({
   return (
     <div style={{ position: "absolute" }}>
       {suggestedLabels.map((l: any) => {
+        const labels = labelutils.deserialize(labelsStr);
+
         let caption = l._id;
-        if (labelsStr.match(new RegExp(`\\b${l._id}\\b`))) {
-          caption = negate ? `!${l._id}` : <s>{caption}</s>;
+        if (labels[l._id]) {
+          caption = negate ? `!${caption}` : <s>{caption}</s>;
         }
 
         return (
