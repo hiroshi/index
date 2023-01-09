@@ -5,8 +5,7 @@ declare global {
   var _mongoClientPromise: Promise<MongoClient>;
 }
 
-// const uri = process.env.MONGODB_URI
-const uri = "mongodb://mongo/index";
+const uri = process.env.MONGODB_URI || "mongodb://mongo/index";
 const options = {};
 
 let client;

@@ -1,6 +1,6 @@
 services:
   app:
-    image: node:18
+    image: node:18-alpine
     command: npm run dev
     working_dir: /app
     ports:
@@ -8,7 +8,7 @@ services:
     volumes:
     - .:/app
     environment:
-      MONGODB_URI: mongodb://mongo/
+      MONGODB_URI: mongodb://mongo/index
     depends_on:
     - mongo
   mongo:
