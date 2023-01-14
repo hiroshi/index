@@ -11,6 +11,12 @@ services:
       MONGODB_URI: mongodb://mongo/index
     depends_on:
     - mongo
+  tsc:
+    image: node:18-alpine
+    command: npx tsc -w
+    working_dir: /app
+    volumes:
+    - .:/app
   mongo:
     image: mongo:6.0
     volumes:
