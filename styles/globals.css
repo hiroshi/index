@@ -7,8 +7,12 @@ body {
 }
 
 a {
-  color: inherit;
+  color: #3366cc;
   text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 * {
@@ -23,4 +27,8 @@ a {
     color: white;
     background: black;
   }
+}
+
+li > * {
+    vertical-align: top;
 }
