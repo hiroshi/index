@@ -17,8 +17,8 @@ export default function Item({ item, handleUpdate }: any) {
     event.preventDefault();
 
     const labels = labelutils.deserialize(labelsStr);
-    if (item.id) {
-      fetch(`/api/item/${item.id}`, {
+    if (item._id) {
+      fetch(`/api/item/${item._id}`, {
         method: "PATCH",
         body: JSON.stringify({ title, labels }),
       }).then(() => {

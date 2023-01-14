@@ -50,7 +50,7 @@ export default function Home(props: any) {
       <ul>
         {items.map((item: any) => {
           return (
-            <li key={item.id}>
+            <li key={item._id}>
               <Item item={item} handleUpdate={fetchItems} />
             </li>
           );

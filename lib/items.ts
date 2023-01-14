@@ -9,14 +9,7 @@ export default {
         .toArray()
         .then((items) =>
           items.map((item) => {
-            // item._id = item._id.toJSON();
-            // item.id = item._id.toJSON();
-            // delete item._id;
-            return {
-              id: item._id.toJSON(),
-              title: item.title,
-              labels: item.labels || [],
-            };
+            return JSON.parse(JSON.stringify(item));
           })
         )
     );
