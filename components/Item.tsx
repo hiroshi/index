@@ -7,10 +7,15 @@ import useOutsideClick from "./hooks/useOutsideClick";
 
 export default function Item({ item, handleUpdate }: any) {
   if (!item) {
-    item = { title: "", labels: [] };
+    item = {};
   }
-  const [title, setTitle] = useState(item.title);
-  const [editMode, setEditMode] = useState(title === "");
+  const [title, setTitle] = useState(item.title || "");
+  const [editMode, setEditMode] = useState(!item._id);
+  useEffect(() => {
+    if (!item._id) {
+      setEditMode(true);
+    }
+  }, [title]);
   const initialLabelStr = labelutils.serialize(item.labels);
   const [labelsStr, setLabelsStr] = useState(initialLabelStr);
   useEffect(() => {
@@ -18,7 +23,6 @@ export default function Item({ item, handleUpdate }: any) {
   }, [initialLabelStr]);
 
   const handleClick = (event: any) => {
-    console.log(event.target.tagName);
     if (!editMode && event.target.tagName !== "A") {
       event.preventDefault();
       setEditMode(true);
@@ -26,7 +30,10 @@ export default function Item({ item, handleUpdate }: any) {
   };
   const ref = useRef(null);
   useOutsideClick(ref, () => {
-    setEditMode(false);
+    console.log(item);
+    if (item._id) {
+      setEditMode(false);
+    }
   });
 
   const handleSubmit = (event: any) => {
@@ -53,13 +60,12 @@ export default function Item({ item, handleUpdate }: any) {
   };
 
   const renderTitle = () => {
-    const style = { display: "inline-block", width: "480px" };
     return item.url ? (
-      <Link style={style} href={item.url} target="_blank">
+      <Link href={item.url} target="_blank">
         {title}
       </Link>
     ) : (
-      <span style={style}>{title}</span>
+      <span>{title}</span>
     );
   };
 
@@ -79,7 +85,9 @@ export default function Item({ item, handleUpdate }: any) {
           onChange={(e) => setTitle(e.target.value)}
         />
       ) : (
-        renderTitle()
+        <span style={{ display: "inline-block", width: "480px" }}>
+          {renderTitle()}
+        </span>
       )}{" "}
       <LabelsInput
         initialLabelsStr={labelsStr}
