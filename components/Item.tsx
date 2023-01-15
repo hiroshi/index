@@ -78,14 +78,22 @@ export default function Item({ item, handleUpdate }: any) {
     >
       {editMode ? (
         <input
-          style={{ width: "480px" }}
+          style={{ width: "480px", fontSize: "small" }}
           type="text"
           placeholder="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
       ) : (
-        <span style={{ display: "inline-block", width: "480px" }}>
+        <span
+          style={{
+            display: "inline-block",
+            width: "480px",
+            fontSize: "small",
+            fontFamily: "Roboto,Helvetica,Arial,Hiragino Sans,sans-serif",
+            paddingLeft: "4px",
+          }}
+        >
           {renderTitle()}
         </span>
       )}{" "}
