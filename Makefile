@@ -28,3 +28,6 @@ gke-manifest:
 # debug
 local-build:
 	docker-compose run --rm app npx next build
+
+mongosh:
+	docker compose exec mongo mongosh index
