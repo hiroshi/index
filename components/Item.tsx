@@ -53,7 +53,7 @@ export default function Item({ item, handleUpdate }: any) {
         body: JSON.stringify({ item: { title, labels } }),
       }).then(() => {
         setTitle("");
-        setLabelsStr("");
+        setLabelsStr(initialLabelStr);
         handleUpdate();
       });
     }
