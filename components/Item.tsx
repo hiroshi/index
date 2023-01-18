@@ -10,12 +10,15 @@ export default function Item({ item, handleUpdate }: any) {
     item = {};
   }
   const [title, setTitle] = useState(item.title || "");
+
+  const [editTarget, setEditTarget] = useState(null);
   const [editMode, setEditMode] = useState(!item._id);
   useEffect(() => {
     if (!item._id) {
       setEditMode(true);
     }
   }, [title]);
+
   const initialLabelStr = labelutils.serialize(item.labels);
   const [labelsStr, setLabelsStr] = useState(initialLabelStr);
   useEffect(() => {
@@ -25,6 +28,8 @@ export default function Item({ item, handleUpdate }: any) {
   const handleClick = (event: any) => {
     if (!editMode && event.target.tagName !== "A") {
       event.preventDefault();
+      // console.log(event.target);
+      setEditTarget(event.target);
       setEditMode(true);
     }
   };
@@ -81,6 +86,7 @@ export default function Item({ item, handleUpdate }: any) {
           style={{ width: "480px", fontSize: "small" }}
           type="text"
           placeholder="title"
+          autoFocus={editTarget?.tagName !== "INPUT"}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
