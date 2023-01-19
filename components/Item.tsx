@@ -11,7 +11,7 @@ export default function Item({ item, handleUpdate }: any) {
   }
   const [title, setTitle] = useState(item.title || "");
 
-  const [editTarget, setEditTarget] = useState(null);
+  const [editTarget, setEditTarget]: any = useState(null);
   const [editMode, setEditMode] = useState(!item._id);
   useEffect(() => {
     if (!item._id) {
@@ -35,7 +35,7 @@ export default function Item({ item, handleUpdate }: any) {
   };
   const ref = useRef(null);
   useOutsideClick(ref, () => {
-    console.log(item);
+    // console.log(item);
     if (item._id) {
       setEditMode(false);
     }
@@ -86,7 +86,7 @@ export default function Item({ item, handleUpdate }: any) {
           style={{ width: "480px", fontSize: "small" }}
           type="text"
           placeholder="title"
-          autoFocus={editTarget?.tagName !== "INPUT"}
+          autoFocus={editTarget && editTarget.tagName !== "INPUT"}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
