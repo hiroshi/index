@@ -7,7 +7,7 @@ import LabelsInput from "../components/LabelsInput";
 import Item from "../components/Item";
 import Items from "../lib/items";
 
-export default function Home(props: any) {
+export default function Index(props: any) {
   const [filter, setFilter] = useState("");
   const [items, setItems] = useState(props.items);
 
@@ -25,9 +25,11 @@ export default function Home(props: any) {
     fetchItems();
   }, [filter]);
 
+  labelutils.autoGroup(items);
+
   return (
-    <>
-      <div>
+    <div style={{ margin: "1em 2em" }}>
+      <div style={{ marginBottom: "1em" }}>
         filter:{" "}
         <LabelsInput
           initialLabelsStr=""
@@ -36,27 +38,27 @@ export default function Home(props: any) {
         />
       </div>
 
-      <ul>
-        <li>
-          <Item
-            item={{
-              labels: labelutils.deserialize(filter, { ignoreNegate: true }),
-            }}
-            handleUpdate={fetchItems}
-          />
-        </li>
-      </ul>
+      <div style={{ marginBottom: "1em" }}>
+        <Item
+          item={{
+            labels: labelutils.deserialize(filter, { ignoreNegate: true }),
+          }}
+          handleUpdate={fetchItems}
+        />
+      </div>
 
-      <ul>
-        {items.map((item: any) => {
-          return (
-            <li key={item._id}>
-              <Item item={item} handleUpdate={fetchItems} />
-            </li>
-          );
-        })}
-      </ul>
-    </>
+      {items.map((item: any) => {
+        return (
+          <div
+            key={item._id}
+            className="list-item"
+            style={{ display: "list-item" }}
+          >
+            <Item item={item} handleUpdate={fetchItems} />
+          </div>
+        );
+      })}
+    </div>
   );
 }
 
