@@ -25,8 +25,10 @@ export default function Index(props: any) {
     fetchItems();
   }, [filter]);
 
-  labelutils.autoGroup(items);
+  const groupedItems: any[] = labelutils.autoGroup(items);
+  // console.log(groupedItems);
 
+  let lastHeading = "";
   return (
     <div style={{ margin: "1em 2em" }}>
       <div style={{ marginBottom: "1em" }}>
@@ -47,16 +49,21 @@ export default function Index(props: any) {
         />
       </div>
 
-      {items.map((item: any) => {
-        return (
-          <div
-            key={item._id}
-            className="list-item"
-            style={{ display: "list-item" }}
-          >
-            <Item item={item} handleUpdate={fetchItems} />
-          </div>
-        );
+      {groupedItems.map((item) => {
+        if (item.heading) {
+          lastHeading = item.heading;
+          return <h5 key={item.heading}>{item.heading}</h5>;
+        } else {
+          return (
+            <div
+              key={lastHeading + item._id}
+              className="list-item"
+              style={{ display: "list-item" }}
+            >
+              <Item item={item} handleUpdate={fetchItems} />
+            </div>
+          );
+        }
       })}
     </div>
   );
