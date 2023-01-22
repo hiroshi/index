@@ -52,13 +52,17 @@ export default function Index(props: any) {
       {groupedItems.map((item) => {
         if (item.heading) {
           lastHeading = item.heading;
-          return <h5 key={item.heading}>{item.heading}</h5>;
+          return (
+            <h5 key={item.heading} style={{ marginBottom: 0 }}>
+              {item.heading}
+            </h5>
+          );
         } else {
           return (
             <div
               key={lastHeading + item._id}
               className="list-item"
-              style={{ display: "list-item" }}
+              style={{ display: "list-item", marginLeft: "1em" }}
             >
               <Item item={item} handleUpdate={fetchItems} />
             </div>
