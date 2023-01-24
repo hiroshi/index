@@ -29,6 +29,6 @@ a:hover {
   }
 }
 
-li > * {
+.list-item > * {
     vertical-align: top;
 }
