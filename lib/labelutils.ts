@@ -29,6 +29,46 @@ const deserialize = (str: string, opts: { ignoreNegate?: boolean } = {}) => {
   return labels;
 };
 
+const toQueryString = (labels: Labels) => {
+  let list = [];
+  for (let label in labels) {
+    list.push(`${label}=${labels[label]}`);
+  }
+  return "?" + list.join("&");
+};
+
+const fromQuery = (query: any) => {
+  let labels: Labels = {};
+  for (let label in query) {
+    let val = query[label];
+    switch (val) {
+      case "true":
+        val = true;
+        break;
+      case "false":
+        val = false;
+        break;
+    }
+    labels[label] = val;
+  }
+  return labels;
+};
+
+// const fromQueryString = (query: string) => {
+//   let labels: Labels = {};
+//   query.split(/&/).forEach((pair) => {
+//     const m = pair.match(/^(\w+)=(\w+)$/);
+//     if (m) {
+//       let val = m[2];
+//       if (val === "true") {
+//         val = true;
+//       }
+//       labels[m[1]] = val;
+//     }
+//   });
+//   return labels;
+// };
+
 const autoGroup = (items: Item[]) => {
   const labelsItems: { [k: string]: Item[] } = {};
   items.forEach((item) => {
@@ -42,10 +82,10 @@ const autoGroup = (items: Item[]) => {
   // console.log(labelsItems);
   let results: Array<Grouped> = [];
   for (let labels in labelsItems) {
-    results.push({ heading: labels });
+    results.push({ heading: labels, labels: deserialize(labels) });
     results = results.concat(labelsItems[labels]);
   }
   return results;
 };
 
-export default { serialize, deserialize, autoGroup };
+export default { serialize, deserialize, toQueryString, fromQuery, autoGroup };
