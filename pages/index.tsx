@@ -11,22 +11,22 @@ import Item from "../components/Item";
 import Items from "../lib/items";
 
 export default function Index(props: any) {
+  const router = useRouter();
   const [items, setItems] = useState(props.items);
 
-  const fetchItems = (newFilter: string | "") => {
-    fetch(`/api/indices?q=${newFilter}`)
-      .then((res) => res.json())
-      .then((data) => setItems(data));
-  };
-
-  const router = useRouter();
   const filter = labelutils.serialize(labelutils.fromQuery(router.query));
   const setFilter = (newFilter: string) => {
     const newQueryString = labelutils.toQueryString(
       labelutils.deserialize(newFilter)
     );
     router.push(newQueryString);
-    fetchItems(newFilter);
+    fetchItems();
+  };
+
+  const fetchItems = () => {
+    fetch(`/api/indices?q=${filter}`)
+      .then((res) => res.json())
+      .then((data) => setItems(data));
   };
 
   const groupedItems: any[] = labelutils.autoGroup(items);
