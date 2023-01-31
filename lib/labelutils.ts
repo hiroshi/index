@@ -69,7 +69,7 @@ const fromQuery = (query: any) => {
 //   return labels;
 // };
 
-const autoGroup = (items: Item[]) => {
+const autoGroup = (items: Item[], filter: string) => {
   const labelsItems: { [k: string]: Item[] } = {};
   if (items.length === 0) {
     return [];
@@ -87,13 +87,17 @@ const autoGroup = (items: Item[]) => {
       );
     }
   });
+
   let results: Array<Grouped> = [];
   for (let labels in labelsItems) {
     // Move common labels first
     const ls = intersection
       .concat(labels.split(/\s+/).filter((l) => !intersection.includes(l)))
       .join(" ");
-    results.push({ heading: ls, labels: deserialize(labels) });
+    results.push({
+      heading: ls,
+      labels: Object.assign(deserialize(labels), deserialize(filter || "")),
+    });
     results = results.concat(labelsItems[labels]);
   }
   return results;

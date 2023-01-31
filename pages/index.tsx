@@ -29,7 +29,7 @@ export default function Index(props: any) {
       .then((data) => setItems(data));
   };
 
-  const groupedItems: any[] = labelutils.autoGroup(items);
+  const groupedItems: any[] = labelutils.autoGroup(items, filter);
   // console.log(groupedItems);
 
   return (
