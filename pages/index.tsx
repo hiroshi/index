@@ -20,16 +20,17 @@ export default function Index(props: any) {
       labelutils.deserialize(newFilter)
     );
     router.push(newQueryString);
-    fetchItems();
+    fetchItems(newFilter);
   };
 
-  const fetchItems = () => {
-    fetch(`/api/indices?q=${filter}`)
+  const fetchItems = (newFilter: string | undefined) => {
+    fetch(`/api/indices?q=${newFilter || filter}`)
       .then((res) => res.json())
       .then((data) => setItems(data));
   };
 
   const groupedItems: any[] = labelutils.autoGroup(items);
+  // console.log(groupedItems);
 
   return (
     <div style={{ margin: "1em 2em" }}>
