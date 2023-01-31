@@ -71,18 +71,29 @@ const fromQuery = (query: any) => {
 
 const autoGroup = (items: Item[]) => {
   const labelsItems: { [k: string]: Item[] } = {};
+  if (items.length === 0) {
+    return [];
+  }
+
+  let intersection = Object.keys(items[0].labels); // Extract common labels
   items.forEach((item) => {
     const labels: string = serialize(item.labels, { sort: true });
     if (labels in labelsItems) {
       labelsItems[labels].push(item);
     } else {
       labelsItems[labels] = [item];
+      intersection = intersection.filter((l) =>
+        Object.keys(item.labels).includes(l)
+      );
     }
   });
-  // console.log(labelsItems);
   let results: Array<Grouped> = [];
   for (let labels in labelsItems) {
-    results.push({ heading: labels, labels: deserialize(labels) });
+    // Move common labels first
+    const ls = intersection
+      .concat(labels.split(/\s+/).filter((l) => !intersection.includes(l)))
+      .join(" ");
+    results.push({ heading: ls, labels: deserialize(labels) });
     results = results.concat(labelsItems[labels]);
   }
   return results;
