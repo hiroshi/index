@@ -24,7 +24,8 @@ export default function Index(props: any) {
   };
 
   const fetchItems = (newFilter: string | undefined) => {
-    fetch(`/api/indices?q=${newFilter || filter}`)
+    const q = newFilter === undefined ? filter : newFilter;
+    fetch(`/api/indices?q=${q}`)
       .then((res) => res.json())
       .then((data) => setItems(data));
   };

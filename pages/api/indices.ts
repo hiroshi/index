@@ -13,7 +13,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(204).send("");
       break;
     case "GET":
-      // console.log(req.query);
       const q = req.query.q as string;
       const filter: { [key: string]: any } = {};
 
