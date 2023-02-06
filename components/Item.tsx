@@ -50,6 +50,7 @@ export default function Item({ item, handleUpdate }: any) {
         method: "PATCH",
         body: JSON.stringify({ title, labels }),
       }).then(() => {
+        setEditMode(false);
         handleUpdate();
       });
     } else {
