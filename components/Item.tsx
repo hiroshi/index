@@ -83,19 +83,27 @@ export default function Item({ item, handleUpdate }: any) {
       onClick={handleClick}
     >
       {editMode ? (
-        <input
-          style={{ width: "480px", fontSize: "small" }}
-          type="text"
-          placeholder="title"
-          autoFocus={editTarget && editTarget.tagName !== "INPUT"}
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
+        <>
+          <input
+            style={{ width: "480px", fontSize: "small" }}
+            type="text"
+            placeholder="title"
+            autoFocus={editTarget && editTarget.tagName !== "INPUT"}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />{" "}
+          <LabelsInput
+            initialLabelsStr={labelsStr}
+            onChange={(e: any) => setLabelsStr(e.target.value)}
+          />{" "}
+          <button style={{ verticalAlign: "top" }} type="submit">
+            submit
+          </button>
+        </>
       ) : (
         <span
           style={{
             display: "inline-block",
-            width: "480px",
             fontSize: "small",
             fontFamily: "Roboto,Helvetica,Arial,Hiragino Sans,sans-serif",
             paddingLeft: "4px",
@@ -103,14 +111,7 @@ export default function Item({ item, handleUpdate }: any) {
         >
           {renderTitle()}
         </span>
-      )}{" "}
-      <LabelsInput
-        initialLabelsStr={labelsStr}
-        onChange={(e: any) => setLabelsStr(e.target.value)}
-      />{" "}
-      <button style={{ verticalAlign: "top" }} type="submit">
-        submit
-      </button>
+      )}
     </form>
   );
 }
