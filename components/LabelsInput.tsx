@@ -69,12 +69,12 @@ export default function LabelsInput({
   const labelsRef = useRef(null);
   const suggestedMergin = suggestedLabels ? "1.5em" : 0;
 
-  const labelsInputRef = useRef(null);
+  const labelsInputRef = useRef<HTMLInputElement>(null);
   const handleSelectLabel = (label: string) => {
     if (labelsStr.match(/^\s*$/)) {
       setLabelsStr(label);
     } else {
-      labelsInputRef.current.focus();
+      labelsInputRef.current?.focus();
       const labels = labelutils.deserialize(labelsStr);
       for (const l in labels) {
         if (label === l) {
