@@ -4,9 +4,9 @@ import { collectionPromise } from "../../../lib/mongo";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
-  console.log(id);
-  console.log(req.body);
   const item = JSON.parse(req.body);
+  item.updated_at = new Date();
+  console.log({ id, item });
 
   collectionPromise("items").then(async (coll) => {
     const result = await coll.updateOne(
