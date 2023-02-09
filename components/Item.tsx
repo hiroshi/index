@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import cx from "classnames";
 
 import labelutils from "../lib/labelutils";
 import LabelsInput from "./LabelsInput";
@@ -77,7 +78,7 @@ export default function Item({ item, handleUpdate }: any) {
 
   return (
     <form
-      style={{ display: "inline" }}
+      className={cx({ item: true, edit: editMode })}
       ref={ref}
       onSubmit={handleSubmit}
       onClick={handleClick}
