@@ -74,6 +74,7 @@ export default function LabelsInput({
     if (labelsStr.match(/^\s*$/)) {
       setLabelsStr(label);
     } else {
+      labelsInputRef.current.focus();
       const labels = labelutils.deserialize(labelsStr);
       for (const l in labels) {
         if (label === l) {
@@ -88,7 +89,6 @@ export default function LabelsInput({
       }
       setLabelsStr(labelsStr + " " + label);
     }
-    // labelsInputRef.current.focus();
   };
 
   useEffect(() => {

@@ -34,5 +34,5 @@ a:hover {
 }
 
 .item:hover:not(.edit) {
-    background: #0085f230;
+    background: #eeeeee;
 }
