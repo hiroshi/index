@@ -78,6 +78,7 @@ export default function Item({ item, handleUpdate }: any) {
 
   return (
     <form
+      style={{ margin: "2px 0" }}
       className={cx({ item: true, edit: editMode })}
       ref={ref}
       onSubmit={handleSubmit}
@@ -86,7 +87,7 @@ export default function Item({ item, handleUpdate }: any) {
       {editMode ? (
         <>
           <input
-            style={{ width: "480px", fontSize: "small" }}
+            style={{ width: "480px", fontSize: "16px" }}
             type="text"
             placeholder="title"
             autoFocus={editTarget && editTarget.tagName !== "INPUT"}
@@ -105,7 +106,7 @@ export default function Item({ item, handleUpdate }: any) {
         <span
           style={{
             display: "inline-block",
-            fontSize: "small",
+            fontSize: "16px",
             fontFamily: "Roboto,Helvetica,Arial,Hiragino Sans,sans-serif",
             paddingLeft: "4px",
           }}
